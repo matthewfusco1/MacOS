@@ -1,0 +1,42 @@
+Make MacOs TItle bar black 
+
+MainFluterWindoww.swift from macso, runnign, 
+
+import Cocoa
+import FlutterMacOS
+
+class MainFlutterWindow: NSWindow {
+  override func awakeFromNib() {
+    let flutterViewController = FlutterViewController.init()
+    let windowFrame = self.frame
+    self.contentViewController = flutterViewController
+    self.setFrame(windowFrame, display: true)
+
+    RegisterGeneratedPlugins(registry: flutterViewController)
+
+    // Configure window for translucent titlebar
+    self.titlebarAppearsTransparent = true
+    self.titleVisibility = .hidden
+    self.styleMask.insert(.fullSizeContentView)
+    
+    // Create and configure visual effect view for titlebar
+    let visualEffectView = NSVisualEffectView()
+    visualEffectView.material = .hudWindow // More translucent material
+    visualEffectView.state = .active
+    visualEffectView.blendingMode = .behindWindow
+    
+    // Add visual effect view to the entire window
+    if let contentView = self.contentView {
+      visualEffectView.frame = NSMakeRect(0, windowFrame.height - 28, windowFrame.width, 28)
+      contentView.addSubview(visualEffectView, positioned: .above, relativeTo: nil)
+    }
+
+    super.awakeFromNib()
+  }
+}
+
+
+Add in info.plsit 
+
+   <key>NSRequiresAquaSystemAppearance</key>
+   <false/>
